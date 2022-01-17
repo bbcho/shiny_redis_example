@@ -13,3 +13,33 @@ Currently Redis Cluster does not support NATted environments and in general envi
 Docker uses a technique called port mapping: programs running inside Docker containers may be exposed with a different port compared to the one the program believes to be using. This is useful in order to run multiple containers using the same ports, at the same time, in the same server.
 
 In order to make Docker compatible with Redis Cluster you need to use the host networking mode of Docker. Please check the --net=host option in the [Docker documentation](https://docs.docker.com/engine/userguide/networking/dockernetworks/) for more information.
+
+### Logging into Redis Kubernetes Cluster
+
+`kubectl -n redis exec -it redis-0 -- sh # master`
+or
+`kubectl -n redis exec -it redis-1 -- sh # a slave`
+
+```
+redis-cli
+auth <password>
+exit # to exit, do twice
+```
+
+### Accessing the Redis Cluster
+
+```
+import redis
+r = redis.Redis(
+    host='redis-0.redis.redis.svc.cluster.local',
+    port=6379,
+    password='password')
+r.set('foo', 'bar')
+r.get('foo')
+```
+
+https://stackoverflow.com/questions/56334974/connect-to-kubernetes-mongo-db-in-different-namespace
+
+# Juptyer
+
+https://towardsdatascience.com/jupyter-notebook-spark-on-kubernetes-880af7e06351
