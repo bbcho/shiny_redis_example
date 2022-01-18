@@ -47,6 +47,24 @@ rredis::redisConnect(
     )
 redisSet('test','value')
 redisGet('test')
+
+data <- data.frame(a = 1:3, b = letters[1:3], c = Sys.Date() - 1:3)
+df <- as_tibble(data)
+redisSet("df", df)
+redisGet("df")
+
+# for faster performance for 10,000 writes per second use:
+library("rredis")
+redisConnect()
+redisConnect(nodelay=TRUE)
+for(j in 1:100) redisSet("x", j)
+
+# or pipelining
+library("rredis")
+redisConnect()
+redisSetPipeline(TRUE)
+for(j in 1:100) redisSet("x", j)
+resp <- redisGetResponse()
 ```
 
 https://stackoverflow.com/questions/56334974/connect-to-kubernetes-mongo-db-in-different-namespace
