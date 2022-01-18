@@ -1,0 +1,11 @@
+helm install rstudio dsri/rstudio \
+--set serviceAccount.name=anyuid \
+--set service.openshiftRoute.enabled=false \
+--set image.repository=ghcr.io/maastrichtu-ids/rstudio \
+--set image.tag=latest \
+--set storage.mountPath=/home/rstudio \
+--set service.openshift.tls.enabled=false \
+--set serviceAccount.create=true \
+--set storage.enabled=false \
+--set username=rpanda \
+--set password=changeme

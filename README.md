@@ -3,7 +3,7 @@
 ## Redis Cluster Notes
 
 - https://redis.io/topics/cluster-tutorial
-- https://www.containiq.com/post/deploy-redis-cluster-on-kubernetes
+- https://www.containiq.com/post/deploy-redis-cluster-on-kubernetes \*\* best one
 - https://medium.com/swlh/production-checklist-for-redis-on-kubernetes-60173d5a5325
 
 ### Redis Cluster and Docker
@@ -28,7 +28,7 @@ exit # to exit, do twice
 
 ### Accessing the Redis Cluster
 
-```
+```{python}
 import redis
 r = redis.Redis(
     host='redis-0.redis.redis.svc.cluster.local',
@@ -38,7 +38,23 @@ r.set('foo', 'bar')
 r.get('foo')
 ```
 
+```{r}
+library(rredis)
+rredis::redisConnect(
+    host='redis-0.redis.redis.svc.cluster.local',
+    port=6379,
+    password='password'
+    )
+redisSet('test','value')
+redisGet('test')
+```
+
 https://stackoverflow.com/questions/56334974/connect-to-kubernetes-mongo-db-in-different-namespace
+
+# Rstudio
+
+https://stackoverflow.com/questions/70591310/deploy-rstudio-web-ide-on-kubernetes-via-helm
+https://artifacthub.io/packages/helm/dsri-helm-charts/rstudio
 
 # Juptyer
 
