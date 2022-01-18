@@ -61,9 +61,14 @@ def loadFromRedis(alias):
 
 
 storeInRedis('locations', locdf)
-
 loadFromRedis('locations')
 ```
+
+## More complex objects
+
+https://stackoverflow.com/questions/15219858/how-to-store-a-complex-object-in-redis-using-redis-py
+
+use json
 
 ```{r}
 library(rredis)
