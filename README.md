@@ -40,16 +40,29 @@ r.get('foo')
 # to store dataframes
 # https://stackoverflow.com/questions/57949871/how-to-set-get-pandas-dataframes-into-redis-using-pyarrow/57986261#57986261
 
-import pandas as pd
 import pyarrow as pa
 import redis
 
-df=pd.DataFrame({'A':[1,2,3]})
-r = redis.Redis(host='localhost', port=6379, db=0)
+pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
+r = redis.Redis(connection_pool=pool)
 
-context = pa.default_serialization_context()
-r.set("key", context.serialize(df).to_buffer().to_pybytes())
-context.deserialize(r.get("key"))
+def storeInRedis(alias, df):
+    df_compressed = pa.serialize(df).to_buffer().to_pybytes()
+    res = r.set(alias,df_compressed)
+    if res == True:
+        print(f'{alias} cached')
+
+def loadFromRedis(alias):
+    data = r.get(alias)
+    try:
+        return pa.deserialize(data)
+    except:
+        print("No data")
+
+
+storeInRedis('locations', locdf)
+
+loadFromRedis('locations')
 ```
 
 ```{r}
